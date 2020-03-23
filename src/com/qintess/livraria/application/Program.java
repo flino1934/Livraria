@@ -22,12 +22,17 @@ public class Program {
 		//Cliente cliente = clienteDao.findById(2);
 		//System.out.println(cliente);
 		
-		List<Cliente> list = clienteDao.findAll();
-		for (Cliente cliente2 : list) {
-			
-			System.out.println(cliente2);
+		Cliente cliente = clienteDao.findById(1);
+		cliente.setName("Felipe Lino");
+		//cliente.setTelefone("(13) 98137-5682");
+		clienteDao.update(cliente);
 		
-		}
+		//List<Cliente> list = clienteDao.findAll();
+		//for (Cliente cliente2 : list) {
+			
+			//System.out.println(cliente2);
+		
+		//}
 		
 	}
 

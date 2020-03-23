@@ -72,6 +72,33 @@ public class ClienteDaoJDBC implements ClienteDao {
 
 	@Override
 	public void update(Cliente cliente) {
+		
+		PreparedStatement st = null;
+
+		try {
+
+			st = conn.prepareStatement(
+					"UPDATE cliente " +
+					"SET NOME = ?, TELEFONE = ? " +
+					"WHERE IDCLIENTE = ?");//Os dados que podem ser alterados apartir do id
+			
+			
+			st.setString(1,cliente.getName());
+			st.setString(2,cliente.getTelefone());
+			st.setInt(3,cliente.getId());
+
+			st.executeUpdate();
+
+		} catch (SQLException e) {
+
+			throw new DbException(e.getMessage());
+
+		} finally {
+
+			DB.closeStatement(st);
+
+		}
+
 
 	}
 
