@@ -82,10 +82,9 @@ public class ClienteDaoJDBC implements ClienteDao {
 					"SET NOME = ?, TELEFONE = ? " +
 					"WHERE IDCLIENTE = ?");//Os dados que podem ser alterados apartir do id
 			
-			
-			st.setString(1,cliente.getName());
-			st.setString(2,cliente.getTelefone());
-			st.setInt(3,cliente.getId());
+			st.setString(1, cliente.getName());
+			st.setString(2, cliente.getTelefone());
+			st.setInt(3, cliente.getId());
 
 			st.executeUpdate();
 
@@ -99,12 +98,31 @@ public class ClienteDaoJDBC implements ClienteDao {
 
 		}
 
-
 	}
 
 	@Override
 	public void deleteById(Integer id) {
 		// TODO Auto-generated method stub
+		
+		PreparedStatement st = null;
+		
+		try {
+			
+			st = conn.prepareStatement(
+					"DELETE FROM cliente WHERE IDCLIENTE = ?");
+			
+			st.setInt(1,id);//vai passar o id que vem como parametro
+			st.executeUpdate();
+			
+		}catch(SQLException e) {
+			
+			throw new DbException(e.getMessage());
+			
+		}finally {
+			
+			DB.closeStatement(st);
+			
+		}
 
 	}
 
