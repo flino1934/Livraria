@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.qintess.livraria.db.DB;
@@ -115,7 +116,36 @@ public class ClienteDaoJDBC implements ClienteDao {
 	@Override
 	public List<Cliente> findAll() {
 		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			st = conn.prepareStatement(
+					"SELECT * FROM cliente ORDER BY NOME");
+			
+			rs = st.executeQuery();
+
+			List<Cliente> list = new ArrayList();
+
+			while (rs.next()) {
+
+				Cliente cliente = instantiateDepartment(rs);
+				list.add(cliente);// vai passar cliente como argumento para lista
+
+			}
+
+			return list;
+
+		} catch (SQLException e) {
+
+			throw new DbException(e.getMessage());
+
+		} finally {
+			DB.closeResultSet(rs);
+			DB.closeStatement(st);
+		}
+		
 	}
 
 	private Cliente instantiateDepartment(ResultSet rs) throws SQLException {// Metodo de intanciação do Cliente
