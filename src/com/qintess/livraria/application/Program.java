@@ -12,11 +12,11 @@ public class Program {
 		// TODO Auto-generated method stub
 
 		ClienteDao clienteDao = DaoFactory.createClienteDao();
-		//Cliente cliente = new Cliente();
+		
 
 		// Insert Cliente
-		// cliente = new Cliente(null, "Lucas", "3012-2551");
-		// clienteDao.insert(cliente);
+		//Cliente cliente = new Cliente(null,"Sarah","(13)98133-3855");
+		//clienteDao.insert(cliente);
 
 		//findById cliente
 		//Cliente cliente = clienteDao.findById(2);
@@ -24,7 +24,9 @@ public class Program {
 		
 		List<Cliente> list = clienteDao.findAll();
 		for (Cliente cliente2 : list) {
+			
 			System.out.println(cliente2);
+		
 		}
 		
 	}

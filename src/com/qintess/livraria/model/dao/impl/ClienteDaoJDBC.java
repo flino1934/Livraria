@@ -32,13 +32,13 @@ public class ClienteDaoJDBC implements ClienteDao {
 
 			st = conn.prepareStatement(
 					"INSERT INTO cliente "
-							+"(IDCLIENTE, NOME, TELEFONE) " 
+							+"(NOME, TELEFONE) " 
 							+"VALUES " 
-							+"(?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
+							+"(?, ?)",Statement.RETURN_GENERATED_KEYS);
+			//Vamos passar 3 valores no insert, pois o id vai ser gerado automaticamente.
 			
-			st.setInt(1,cliente.getId());
-			st.setString(2,cliente.getName());
-			st.setString(3,cliente.getTelefone());
+			st.setString(1,cliente.getName());
+			st.setString(2,cliente.getTelefone());
 			
 			int rowAffected = st.executeUpdate();
 
@@ -49,14 +49,14 @@ public class ClienteDaoJDBC implements ClienteDao {
 				if (rs.next()) {
 
 					int id = rs.getInt(1);// Vai pegar o id
-					cliente.setId(id);// vai atribuir o id ao obj
+					cliente.setId(id);// vai atribuir o id ao cliente
 					
 				}
 
 				DB.closeResultSet(rs);
 
 			} else {
-				throw new DbException("Erro inesperado");
+				throw new DbException("Nenhuma linha foi Inserida");
 			}
 		} catch (SQLException e) {
 
