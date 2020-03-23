@@ -8,7 +8,7 @@ import com.qintess.livraria.model.dao.ClienteDao;
 import com.qintess.livraria.model.dao.DaoFactory;
 import com.qintess.livraria.model.entities.Cliente;
 
-public class Program {
+public class ExecutaCliente {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
