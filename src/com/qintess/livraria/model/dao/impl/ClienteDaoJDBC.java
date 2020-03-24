@@ -140,7 +140,7 @@ public class ClienteDaoJDBC implements ClienteDao {
 			
 			if (rs.next()) {
 
-				Cliente cliente = instantiateDepartment(rs);//vai chamar o metodo
+				Cliente cliente = instantiateCliente(rs);//vai chamar o metodo
 				
 				return cliente;//retorna o obj
 			}
@@ -175,7 +175,7 @@ public class ClienteDaoJDBC implements ClienteDao {
 
 			while (rs.next()) {
 
-				Cliente cliente = instantiateDepartment(rs);
+				Cliente cliente = instantiateCliente(rs);
 				list.add(cliente);// vai passar cliente como argumento para lista
 
 			}
@@ -193,7 +193,7 @@ public class ClienteDaoJDBC implements ClienteDao {
 		
 	}
 
-	private Cliente instantiateDepartment(ResultSet rs) throws SQLException {// Metodo de intanciação do Cliente
+	private Cliente instantiateCliente(ResultSet rs) throws SQLException {// Metodo de intanciação do Cliente
 		// TODO Auto-generated method stub
 
 		Cliente cliente = new Cliente();

@@ -10,9 +10,9 @@ public interface GeneroDao {
 
 	void update(Genero genero);
 
-	void deleteById(Genero genero);
+	void deleteById(Integer id);
 	
-	Genero findById(Genero genero);// vai consultar se tem o id solicitado
+	Genero findById(Integer id);// vai consultar se tem o id solicitado
 	
 	List<Genero> findAll();// vai retornar todos os Clientes
 
