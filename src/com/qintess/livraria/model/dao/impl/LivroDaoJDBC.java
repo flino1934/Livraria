@@ -78,12 +78,59 @@ public class LivroDaoJDBC implements LivroDao {
 	@Override
 	public void update(Livro livro) {
 		// TODO Auto-generated method stub
+PreparedStatement st = null;
+		
+		try {
+		
+			st = conn.prepareStatement(
+					  "UPDATE livro "
+					+ "SET TITULO = ?, PRECO = ?, ESTOQUE = ?, IDGENERO =? "
+					+ "WHERE IDLIVRO = ?");
+			
+			st.setString(1, livro.getTitulo());
+			st.setFloat(2, livro.getPreco());
+			st.setInt(3, livro.getEstoque());
+			st.setInt(4, livro.getGenero().getIdGenero());// vai navegar no objeto
+			
+			st.setInt(5, livro.getIdLivro());
+
+			st.executeUpdate();
+
+		} catch (SQLException e) {
+
+			throw new DbException(e.getMessage());
+
+		} finally {
+
+			DB.closeStatement(st);
+
+		}
 
 	}
 
 	@Override
 	public void deleteById(Integer id) {
 		// TODO Auto-generated method stub
+		
+		PreparedStatement st = null;
+		
+		try {
+			
+			st = conn.prepareStatement("DELETE FROM livro WHERE IDLIVRO = ?");
+										
+			st.setInt(1,id);
+			
+			st.executeUpdate();
+			
+		}catch(SQLException e) {
+			
+			throw new DbException(e.getMessage());
+			
+		}finally {
+			
+			DB.closeStatement(st);
+			
+		}
 
 	}
 
