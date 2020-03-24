@@ -83,8 +83,51 @@ public class LivroDaoJDBC implements LivroDao {
 
 	@Override
 	public List<Livro> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			st = conn.prepareStatement(//Vai pesquisar pelo id do livro e trazer os dados deles com join na tabela genero
+					"SELECT livro.*,genero.DESCRICAO as DESCRICAO "
+					+"FROM livro INNER JOIN genero "
+					+"ON livro.IDGENERO = genero.IDGENERO "
+					+"ORDER BY TITULO");
+			
+			
+			rs = st.executeQuery();
+			
+			List<Livro> list = new ArrayList<>();
+			Map<Integer,Genero> map = new HashMap<>();
+			//Usar o map pois assim vai dar para verificar se existe a referencia na memoria e assim vai apontar apenas para um local para
+			//não ter que criar varios objetos na memoria
+			
+			while (rs.next()) {
+
+				//Vai testar se o genero ja exiiste.
+				Genero gen = map.get(rs.getInt("IDGENERO"));//Vai pegar o id do genero, caso ele não encontre o o id do genero ele vai retornar nullo
+					
+				if (gen == null) {
+					
+					gen = instantiateGenero(rs);//se não existir vai instanciar
+					map.put(rs.getInt("IDGENERO"), gen);
+				}
+
+				Livro livro = instantiateLivro(rs, gen);
+				list.add(livro);
+
+			}
+			return list;
+		} catch (SQLException e) {
+
+			throw new DbException(e.getMessage());
+
+		} finally {
+			DB.closeResultSet(rs);
+			DB.closeStatement(st);
+		}
+
 	}
 
 	@Override

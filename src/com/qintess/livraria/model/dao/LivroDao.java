@@ -17,7 +17,7 @@ public interface LivroDao {
 
 	List<Livro> findAll();// vai retornar todos os livros(Classe livro)
 
-	List<Livro> findByDepartment(Genero genero);// Vai retornar todos os generos solicitados(classe genero).
+	List<Livro> findByGenero(Genero genero);// Vai retornar todos os generos solicitados(classe genero).
 
 	
 }
