@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,50 @@ public class LivroDaoJDBC implements LivroDao {
 	@Override
 	public void insert(Livro livro) {
 		// TODO Auto-generated method stub
+		
+		PreparedStatement st = null;
+		
+		try {
+		
+			st = conn.prepareStatement(
+					"INSERT INTO livro "
+					+ "(TITULO, PRECO, ESTOQUE, IDGENERO) "
+					+ "VALUES "
+					+ "(?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
+			
+			st.setString(1, livro.getTitulo());
+			st.setFloat(2, livro.getPreco());
+			st.setInt(3, livro.getEstoque());
+			st.setInt(4, livro.getGenero().getIdGenero());// vai navegar no objeto
+
+			int rowAffecteds = st.executeUpdate();
+
+			if (rowAffecteds > 0) {
+
+				ResultSet rs = st.getGeneratedKeys();
+
+				if (rs.next()) {
+
+					int id = rs.getInt(1);
+					livro.setIdLivro(id);
+
+				}
+				
+				DB.closeResultSet(rs);
+
+			} else {
+				throw new DbException("Nenhuma linha alterada");
+			}
+
+		} catch (SQLException e) {
+
+			throw new DbException(e.getMessage());
+
+		} finally {
+
+			DB.closeStatement(st);
+
+		}
 
 	}
 
