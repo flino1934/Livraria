@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.qintess.livraria.db.DB;
 import com.qintess.livraria.db.DbException;
@@ -47,7 +50,7 @@ public class LivroDaoJDBC implements LivroDao {
 		
 		try {
 			
-			st = conn.prepareStatement(
+			st = conn.prepareStatement(//Vai pesquisar pelo id do livro e trazer os dados deles com join na tabela genero
 					"SELECT livro.*,genero.DESCRICAO as DESCRICAO "
 					+"FROM livro INNER JOIN genero "
 					+"ON livro.IDGENERO = genero.IDGENERO "
@@ -85,11 +88,55 @@ public class LivroDaoJDBC implements LivroDao {
 	}
 
 	@Override
-	public List<Livro> findByDepartment(Genero genero) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public List<Livro> findByGenero(Genero genero) {
 	
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			st = conn.prepareStatement(//Vai pesquisar pelo id do livro e trazer os dados deles com join na tabela genero
+					"SELECT livro.*,genero.DESCRICAO as DESCRICAO "
+					+"FROM livro INNER JOIN genero "
+					+"ON livro.IDGENERO = genero.IDGENERO "
+					+"WHERE genero.IDGENERO = ? "
+					+"ORDER BY TITULO");
+			
+			st.setInt(1, genero.getIdGenero());
+			rs = st.executeQuery();
+			
+			List<Livro> list = new ArrayList<>();
+			Map<Integer,Genero> map = new HashMap<>();
+			//Usar o map pois assim vai dar para verificar se existe a referencia na memoria e assim vai apontar apenas para um local para
+			//não ter que criar varios objetos na memoria
+			
+			while (rs.next()) {
+
+				//Vai testar se o genero ja exiiste.
+				Genero gen = map.get(rs.getInt("IDGENERO"));//Vai pegar o id do genero, caso ele não encontre o o id do genero ele vai retornar nullo
+					
+				if (gen == null) {
+					
+					gen = instantiateGenero(rs);//se não existir vai instanciar
+					map.put(rs.getInt("IDGENERO"), gen);
+				}
+
+				Livro livro = instantiateLivro(rs, gen);
+				list.add(livro);
+
+			}
+			return list;
+		} catch (SQLException e) {
+
+			throw new DbException(e.getMessage());
+
+		} finally {
+			DB.closeResultSet(rs);
+			DB.closeStatement(st);
+		}
+
+	}
+
 	private Genero instantiateGenero(ResultSet rs) throws SQLException {// Metodo de intanciação do Cliente
 		// TODO Auto-generated method stub
 
