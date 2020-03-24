@@ -24,4 +24,10 @@ public static LivroDao createLivroDao (){//vai expor a interface ao inves de exp
 	
 }
 
+public static LivroDao createAutorDao(){//vai expor a interface ao inves de expor a implementação 
+	
+	return new LivroDaoJDBC(com.qintess.livraria.db.DB.getConnection());//Ele vai te retornar a classe LivroDaoJDBC
+	
+}
+
 }

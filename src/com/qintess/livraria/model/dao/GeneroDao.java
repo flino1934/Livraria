@@ -14,6 +14,6 @@ public interface GeneroDao {
 	
 	Genero findById(Integer id);// vai consultar se tem o id solicitado
 	
-	List<Genero> findAll();// vai retornar todos os Clientes
+	List<Genero> findAll();// vai retornar todos os Generos
 
 }
