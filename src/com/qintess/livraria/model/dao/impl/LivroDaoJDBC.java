@@ -78,7 +78,7 @@ public class LivroDaoJDBC implements LivroDao {
 	@Override
 	public void update(Livro livro) {
 		// TODO Auto-generated method stub
-PreparedStatement st = null;
+		PreparedStatement st = null;
 		
 		try {
 		
